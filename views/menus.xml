@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record model="ir.actions.act_window" id="resource_demo_action">
+            <field name="name">Tickets Dashboard</field>
+            <field name="res_model">tickets.dashboard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <div class="listing-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+            </field>
+        </record>
+        <!-- top level menu: no parent -->
+        <menuitem id="main_resource_menu" name="Ticket Dashboard"/>
+
+        <menuitem id="resource_menu" name="Lists"
+                  parent="main_resource_menu"/>
+
+        <menuitem id="default_data_overview_menu" name="Tickets" parent="resource_menu"
+                  action="resource_demo_action"/>
+
+	<!-- Form view for the menuitem -->
+       <record id="resource_demo_form" model="ir.ui.view">
+            <field name="name">tickets.dashboard.form</field>
+            <field name="model">tickets.dashboard</field>
+            <field name="arch" type="xml">
+                <form string="Static resource demo">
+	               <sheet>
+	                   <group>
+	                       <field name="name"/>
+	                          <div class="DemoClass">
+			                     <p class="TextDemoClass">Thank you for downloading this tutorial!</p>
+		                      </div>
+                        </group>
+	               </sheet>
+                </form>
+            </field>
+        </record>
+    </data>
+</openerp>
