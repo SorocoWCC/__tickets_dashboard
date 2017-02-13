@@ -7,12 +7,20 @@
             <field name="view_type">form</field>
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
-                <div class="listing-wrapper">
-                    <table>
+                <div class="custom-container">
+                    <table class="col-xs-6" id="paid-tickets-table">
                         <thead>
                             <tr>
-                                <th>Cliente</th>
-                                <th>Estado</th>
+                                <th>En Proceso...</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    <table class="col-xs-6" id="non-paid-tickets-table">
+                        <thead>
+                            <tr>
+                                <th>Listo para cobro</th>
                             </tr>
                         </thead>
                         <tbody>
