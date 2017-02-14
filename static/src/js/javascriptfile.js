@@ -1,15 +1,27 @@
 (function() {
 
     /*Starts Editable Object*/
-    var _model, _view, _controller, body, containter, ticketsTable,
+    var _model, _view, _controller, updateJob, body, containter, tPaidBody, 
+    tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
+    contentTableActionBar, 
     ticketsModel = {
+        uiInited: true,
         attachHandlers: function(){
+            var that = this;
+
             jQuery(document).on('keydown', function(e){
                 if (e.keyCode === 27){
-                    body.toggleClass('ticketList');
+                    if (!body.hasClass('ticketList')) {
+                        body.addClass('ticketList');
+                        that.hideGlobalComps();
+                        this.initUpdateJob(true);
+                    }else{
+                        body.removeClass('ticketList');
+                        that.showGlobalComps();
+                        this.initUpdateJob(false);
+                    }
                 };
             });
-
         },
         requestTickets: function(callback){
             var that = this,
@@ -22,21 +34,52 @@
                     callback(tickets);
                 });
         },
-        updateCicle: function(){
-
+        initUpdateJob: function(activate){
+            var that = this;
+            if (activate) {
+                updateJob = window.setInterval(function() {
+                    that.requestTickets(function(tickets){
+                        var tRows = '';
+                        jQuery.each(tickets, function( index, value ) {
+                            tRows += '<tr><td>'+value.name +' - '+value.partner_id[1]+'</td></tr>';
+                        });
+                        tPaidBody.append(tRows);
+                        tUnpaidBody.append(tRows);
+                    });
+                }, 15000);
+            }else{
+                 window.clearInterval(updateJob);
+            }
         },
         renderUI: function(){
-            //ticketsTable = container.find('#tickets-table')
-            var tTableBody = container.find('#paid-tickets-table tbody');
+            body.addClass('ticketList');
+            this.initGlobalComps();
+            this.hideGlobalComps();
 
-            this.requestTickets(function(tickets){
-                var tRows = '';
-                jQuery.each(tickets, function( index, value ) {
-                    tRows += '<tr><td>'+value.name +' - '+value.partner_id[1]+'</td></tr>';
-                });
-                console.log(tTableBody);
-                tTableBody.append(tRows);
-            });
+            tPaidBody = container.find('#paid-tickets-table tbody');
+            tUnpaidBody = container.find('#non-paid-tickets-table tbody');
+            this.initUpdateJob(true);
+            
+        },
+        initGlobalComps:function (){
+            navBar = body.find('#oe_main_menu_navbar');
+            contentTable = body.find('table.oe_webclient tbody');
+            contentTableLeftBar = contentTable.find('td.oe_leftbar');
+            moduleContainer = contentTable.find('td.oe_application');
+            contentTableActionBar = moduleContainer.find('table.oe_view_manager_header');
+            this.uiInited = true;
+        },
+        hideGlobalComps: function(){
+            navBar.hide();
+            contentTableLeftBar.hide();
+            contentTableActionBar.hide();
+            container.show();
+        },
+        showGlobalComps: function(){
+            navBar.show();
+            contentTableLeftBar.show();
+            contentTableActionBar.show();
+            container.hide();
         },
         _init: function(model, view, controller){
             _model = model;
