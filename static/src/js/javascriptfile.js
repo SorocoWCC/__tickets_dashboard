@@ -14,11 +14,11 @@
                     if (!body.hasClass('ticketList')) {
                         body.addClass('ticketList');
                         that.hideGlobalComps();
-                        this.initUpdateJob(true);
+                        that.initUpdateJob(true);
                     }else{
                         body.removeClass('ticketList');
                         that.showGlobalComps();
-                        this.initUpdateJob(false);
+                        that.initUpdateJob(false);
                     }
                 };
             });
@@ -46,7 +46,7 @@
                         tPaidBody.append(tRows);
                         tUnpaidBody.append(tRows);
                     });
-                }, 15000);
+                }, 10000);
             }else{
                  window.clearInterval(updateJob);
             }
