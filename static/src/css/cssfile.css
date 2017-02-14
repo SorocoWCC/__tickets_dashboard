@@ -14,7 +14,6 @@ body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent {
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container{
     height: 100%;
     overflow: hidden;
-    
 }
 
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table{
@@ -36,10 +35,10 @@ body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .
     background-color: rgba(171, 183, 183, 0.5);
 }
 
-body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table#non-paid-tickets-table{
-    background-color: #00B16A;
+body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table#drafts-tck-table{
+    background-color: #F9BF3B;
 }
 
-body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table#paid-tickets-table{
-    background-color: #F9BF3B;
+body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table#orders-tck-table{
+    background-color: #00B16A;
 }

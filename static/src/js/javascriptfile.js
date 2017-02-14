@@ -3,7 +3,7 @@
     /*Starts Editable Object*/
     var _model, _view, _controller, updateJob, body, containter, tPaidBody, 
     tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
-    contentTableActionBar, 
+    contentTableActionBar, oldObj, newObj,
     ticketsModel = {
         uiInited: true,
         attachHandlers: function(){
@@ -27,24 +27,34 @@
             var that = this,
             tickets = new openerp.Model('purchase.order');
         
-            tickets.query(['name', 'partner_id'])
-                .filter([['pago_caja', '=', 'pagado']])
+            tickets.query(['name', 'partner_id', 'state'])
+                .filter([['state', '!=', 'cancel'], ['pago_caja', '=', 'pendiente']])
                 .limit(15)
                 .all().then(function(tickets) {
-                    callback(tickets);
+                    newObj = JSON.stringify(tickets);
+                    if (newObj !== oldObj) {
+                        callback(tickets);
+                    };
                 });
         },
         initUpdateJob: function(activate){
             var that = this;
+            console.log('execution');
             if (activate) {
                 updateJob = window.setInterval(function() {
                     that.requestTickets(function(tickets){
-                        var tRows = '';
+                        var drafts = '', orders = '';
+
                         jQuery.each(tickets, function( index, value ) {
-                            tRows += '<tr><td>'+value.name +' - '+value.partner_id[1]+'</td></tr>';
+                            var row = '<tr><td>'+value.name +' - '+value.partner_id[1]+'</td></tr>';
+                            if (value.state === 'draft' || value.state === 'confirmed') {
+                                drafts += row;
+                            }else if(value.state === 'approved'){
+                                orders += row;
+                            }else{};
                         });
-                        tPaidBody.append(tRows);
-                        tUnpaidBody.append(tRows);
+                        tUnpaidBody.html(drafts);
+                        tPaidBody.html(orders);
                     });
                 }, 10000);
             }else{
@@ -56,10 +66,9 @@
             this.initGlobalComps();
             this.hideGlobalComps();
 
-            tPaidBody = container.find('#paid-tickets-table tbody');
-            tUnpaidBody = container.find('#non-paid-tickets-table tbody');
+            tUnpaidBody = container.find('#drafts-tck-table tbody');
+            tPaidBody = container.find('#orders-tck-table tbody');
             this.initUpdateJob(true);
-            
         },
         initGlobalComps:function (){
             navBar = body.find('#oe_main_menu_navbar');
