@@ -28,7 +28,7 @@ body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .custom-container table td{
     color: black;
     font-size: 60px;
-    min-height: 150px;
+    height: 150px;
     padding-left: 10px;
     vertical-align: middle;
 }
