@@ -1,10 +1,72 @@
 (function() {
 
-    /*Starts Editable Object*/
+    /*=== STARTS Global JS Handler // DO NOT TOUCH===*/
+    window.SOROCOModel = {
+        scope: {},
+        modules: [],
+        _attachHandlers: function(){
+            that = this;
+
+            jQuery(document).ready(function(){
+                body = jQuery('body');
+
+                openerp.web.WebClient.include({
+                    start: function() {
+                        this._super();
+                        that._modelWatcher(this);
+                    },
+                });
+            });
+
+            jQuery(document).on('init', function(e){
+                jQuery.each(SOROCOModel.modules, function( index, module ) {
+                    module.init(SOROCOModel.scope, SOROCOModel.scope.view, SOROCOModel.scope.controller);
+                });
+            });
+        },
+        _modelWatcher: function(scope){
+            var srcModel = this,
+            watcher = window.setInterval(function() {
+                var view, controller, cont = $('.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');
+
+                if (scope && scope.action_manager && scope.action_manager.inner_widget  
+                    && scope.action_manager.inner_widget.active_view && cont.length > 0) {
+                        view = scope.action_manager.inner_widget.active_view;
+                        srcModel.scope.model = scope;
+                        srcModel.scope.view = scope.action_manager.inner_widget.active_view;
+                        srcModel.scope.viewContainer = cont;
+                        srcModel.scope.controller = scope.action_manager.inner_widget.views[view].controller;
+
+                    window.clearInterval(watcher);
+                    srcModel.inited = true;
+                    jQuery(document).trigger('init');
+                }
+            }, 2000);
+        },
+        inited: false,
+        initModule: function(module){
+            var SOROCOModel = this; 
+            if(SOROCOModel.inited){
+                module.init(SOROCOModel.scope, SOROCOModel.scope.view, SOROCOModel.scope.controller);
+            }else{
+                SOROCOModel.modules.push(module);
+            }
+        },
+        init: function(scope){
+            this._attachHandlers();
+        }
+    };
+    window.SOROCOModel.init();
+
+    /*=== Ends Global JS Handler // DO NOT TOUCH===*/
+
+
+
+    /*=> Tickets Dashboard Module*/
     var _model, _view, _controller, updateJob, body, containter, tPaidBody, 
     tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
-    contentTableActionBar, oldObj, newObj,
-    ticketsModel = {
+    contentTableActionBar, oldObj, newObj, container
+    ticketsModule = {
         uiInited: true,
         attachHandlers: function(){
             var that = this;
@@ -39,7 +101,7 @@
         },
         initUpdateJob: function(activate){
             var that = this;
-            console.log('execution');
+
             if (activate) {
                 updateJob = window.setInterval(function() {
                     that.requestTickets(function(tickets){
@@ -90,48 +152,16 @@
             contentTableActionBar.show();
             container.hide();
         },
-        _init: function(model, view, controller){
-            _model = model;
-            _view = view;
-            _controller = controller;
-
-            if (view == 'list' && controller.model == 'tickets.dashboard'){
+        init: function(model, view, controller){
+            _model = model; _view = view; _controller = controller;
+            container = window.SOROCOModel.scope.viewContainer;
+            if (_view == 'list' && _controller.model == 'tickets.dashboard'){
                 this.renderUI();
                 this.attachHandlers();
             }
         }
-    },
-    /*Ends Editable Object*/
-
-    /*===DO NOT TOUCH===*/
-    loading = function() {
-        /*@TODO: Create load(splash) screen to show until the DOM is fully loaded*/
-    },
-    igniter = function(model, fnObj){
-        var watcher = window.setInterval(function() {
-            var view, controller, cont = $('.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');
-
-            if (model && model.action_manager && model.action_manager.inner_widget  
-                && model.action_manager.inner_widget.active_view  && cont.length > 0) {
-                view = model.action_manager.inner_widget.active_view;
-                controller = model.action_manager.inner_widget.views[view].controller;
-                container = cont;
-
-                window.clearInterval(watcher);
-                fnObj._init(model, view, controller);
-            }
-        }, 2000);
     };
-    
-    jQuery(document).ready(function(){
-        body = jQuery('body');
 
-        openerp.web.WebClient.include({
-            start: function() {
-                this._super();
-                igniter(this, ticketsModel);
-            },
-        });
-    });
+    window.SOROCOModel.initModule(ticketsModule);
 
 })(window);
