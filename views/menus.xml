@@ -47,8 +47,7 @@
 	               <sheet>
 	                   <group>
 	                       <field name="name"/>
-	                          <div class="DemoClass">
-			                     <p class="TextDemoClass">Thank you for downloading this tutorial!</p>
+	                          <div class="Tickets Dashboard">
 		                      </div>
                         </group>
 	               </sheet>
