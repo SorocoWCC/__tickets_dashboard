@@ -4,7 +4,7 @@
     tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
     contentTableActionBar, oldObj, newObj, container
     ticketsModule = {
-        _requestTickets: function(callback){
+        _requestTickets: function(callback) {
             var that = this,
             tickets = new openerp.Model('purchase.order');
         
@@ -18,7 +18,7 @@
                     };
                 });
         },
-        _initUpdateJob: function(activate){
+        _initUpdateJob: function(activate) {
             var that = this;
 
             if (activate) {
@@ -42,7 +42,7 @@
                  window.clearInterval(updateJob);
             }
         },
-        _renderUI: function(){
+        _renderUI: function() {
             body.addClass('ticketList');
             this._initGlobalComps();
             this._hideGlobalComps();
@@ -51,26 +51,26 @@
             tPaidBody = container.find('#orders-tck-table tbody');
             this._initUpdateJob(true);
         },
-        _initGlobalComps:function (){
+        _initGlobalComps:function () {
             navBar = body.find('#oe_main_menu_navbar');
             contentTable = body.find('table.oe_webclient tbody');
             contentTableLeftBar = contentTable.find('td.oe_leftbar');
             moduleContainer = contentTable.find('td.oe_application');
             contentTableActionBar = moduleContainer.find('table.oe_view_manager_header');
         },
-        _hideGlobalComps: function(){
+        _hideGlobalComps: function() {
             navBar.hide();
             contentTableLeftBar.hide();
             contentTableActionBar.hide();
             container.show();
         },
-        _showGlobalComps: function(){
+        _showGlobalComps: function() {
             navBar.show();
             contentTableLeftBar.show();
             contentTableActionBar.show();
             container.hide();
         },
-        _attachHandlers: function(){
+        _attachHandlers: function() {
             var that = this;
 
             jQuery(document).on('keydown', function(e){
@@ -87,14 +87,14 @@
                 };
             });
         },
-        _detachHandlers: function(){
+        _detachHandlers: function() {
             jQuery(document).off('keydown');
         },
         /*Required module functions*/
-        suspend: function(){
+        suspend: function() {
             this._detachHandlers();
         },
-        init: function(model, view, controller){
+        init: function(model, view, controller) {
             _model = model; _view = view; _controller = controller;
             body = window.SOROCOModel.scope.viewBody;
             container = window.SOROCOModel.scope.customModuleSelector;
