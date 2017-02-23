@@ -1,6 +1,6 @@
 (function() {
     /*=> Tickets Dashboard Module*/
-    var _model, _view, _controller, updateJob, body, tPaidBody, 
+    var igniter = window.SOROCOModel, _model, _view, _controller, updateJob, body, tPaidBody, 
     tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
     contentTableActionBar, oldObj, newObj, container
     ticketsModule = {
@@ -96,8 +96,8 @@
         },
         init: function(model, view, controller) {
             _model = model; _view = view; _controller = controller;
-            body = window.SOROCOModel.scope.viewBody;
-            container = window.SOROCOModel.scope.customModuleSelector;
+            body = igniter.scope.viewBody;
+            container = igniter.scope.customModuleSelector;
             if (_view === 'list' && _controller.model === 'tickets.dashboard'){
                 this._renderUI();
                 this._attachHandlers();
@@ -105,5 +105,5 @@
         }
         /* End Required module functions*/
     };
-    window.SOROCOModel.initModule(ticketsModule, '.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');
+    igniter.initModule(ticketsModule, '.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');
 })(window);
