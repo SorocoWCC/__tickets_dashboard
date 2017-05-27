@@ -18,9 +18,6 @@
                     var modal = body.find('.modal'),
                         modalBackdrop = body.find('.modal-backdrop');
 
-                    console.log('=>Modals:');
-                    console.log(modal);
-
                     if (container.find('.modal') !== undefined) {
                         modal.remove();
                         modalBackdrop.remove();
