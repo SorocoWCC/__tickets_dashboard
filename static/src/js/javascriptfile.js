@@ -11,8 +11,20 @@
             tickets.query(['name', 'partner_id', 'state'])
                 .filter([['state', '!=', 'cancel'], ['pago_caja', '=', 'pendiente']])
                 .limit(15)
-                .all().then(function(tickets) {
+                .all()
+                .then(function(tickets) {
                     newObj = JSON.stringify(tickets);
+
+                    var modal = body.find('.modal'),
+                        modalBackdrop = body.find('.modal-backdrop');
+
+                    console.log('=>Modals:');
+                    console.log(modal);
+
+                    if (container.find('.modal') !== undefined) {
+                        modal.remove();
+                        modalBackdrop.remove();
+                    }
                     if (newObj !== oldObj) {
                         callback(tickets);
                     };
@@ -23,7 +35,7 @@
 
             if (activate) {
                 updateJob = window.setInterval(function() {
-                    that._requestTickets(function(tickets){
+                    that._requestTickets(function(tickets) {
                         var drafts = '', orders = '';
 
                         jQuery.each(tickets, function( index, value ) {
@@ -36,7 +48,7 @@
                         });
                         tUnpaidBody.html(drafts);
                         tPaidBody.html(orders);
-                    });
+                    });                    
                 }, 10000);
             }else{
                  window.clearInterval(updateJob);
