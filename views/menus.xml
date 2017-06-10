@@ -8,24 +8,19 @@
             <field name="view_mode">tree,form</field>
             <field name="help" type="html">
                 <div class="custom-container">
-                    <table class="col-xs-6" id="drafts-tck-table">
-                        <thead>
-                            <tr>
-                                <th>En Proceso...</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    <table class="col-xs-6" id="orders-tck-table">
-                        <thead>
-                            <tr>
-                                <th>Listo para cobro</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div class="table" id="drafts-tck-table">
+                        <div class="table-header">
+                            En proceso...
+                        </div>
+                        <div class="table-body">
+                        </div>
+                    </div><div class="table" id="orders-tck-table">
+                        <div class="table-header">
+                            Listo para cobro
+                        </div>
+                        <div class="table-body">
+                        </div>
+                    </div>
                 </div>
             </field>
         </record>

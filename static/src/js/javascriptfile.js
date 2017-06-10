@@ -8,9 +8,9 @@
             var that = this,
             tickets = new openerp.Model('purchase.order');
         
-            tickets.query(['name', 'partner_id', 'state'])
+            tickets.query(['name', 'partner_id', 'state', 'placa'])
                 .filter([['state', '!=', 'cancel'], ['pago_caja', '=', 'pendiente']])
-                .limit(15)
+                .limit(20)
                 .all()
                 .then(function(tickets) {
                     newObj = JSON.stringify(tickets);
@@ -36,7 +36,19 @@
                         var drafts = '', orders = '';
 
                         jQuery.each(tickets, function( index, value ) {
-                            var row = '<tr><td>'+value.name +' - '+value.partner_id[1]+'</td></tr>';
+                            var ticket = (value.placa !== false) ? value.placa : '',
+                                title = (ticket !== '') ? 'Ficha' : '',
+                                // row = '<tr><td><span class="header ticket">Ficha</span>'+
+                                //         '<span class="ticket">'+ticket+'</span></td><td>'+value.partner_id[1]+
+                                //         '</td></tr>';
+                                row = '<div class="ticket-row">'+
+                                            '<div class="ticket ticket-number">'+
+                                                '<span class="title">'+title+'</span>'+
+                                                '<span class="number">'+ticket+'</span>'+
+                                            '</div>'+
+                                            '<div class="ticket ticket-info">'+value.partner_id[1]+'</div>'+
+                                        '</div>';
+
                             if (value.state === 'draft' || value.state === 'confirmed') {
                                 drafts += row;
                             }else if(value.state === 'approved'){
@@ -46,7 +58,7 @@
                         tUnpaidBody.html(drafts);
                         tPaidBody.html(orders);
                     });                    
-                }, 10000);
+                }, 5000);
             }else{
                  window.clearInterval(updateJob);
             }
@@ -56,8 +68,8 @@
             this._initGlobalComps();
             this._hideGlobalComps();
 
-            tUnpaidBody = container.find('#drafts-tck-table tbody');
-            tPaidBody = container.find('#orders-tck-table tbody');
+            tUnpaidBody = container.find('#drafts-tck-table .table-body');
+            tPaidBody = container.find('#orders-tck-table .table-body');
             this._initUpdateJob(true);
         },
         _initGlobalComps:function () {
