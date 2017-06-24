@@ -112,6 +112,7 @@ body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .
 
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .table .ticket-row .ticket.ticket-number {
     font-weight: bold;
+    overflow: hidden;
     width: 20%;
 }
 
@@ -125,6 +126,7 @@ body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .
 
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent .table .ticket-row .ticket.ticket-info {
     align-items: flex-start;
+    text-overflow: ellipsis;
 }
 
 body.ticketList .oe_view_manager_view_list .oe_list.oe_view .oe_view_nocontent #drafts-tck-table.table .table-body {
