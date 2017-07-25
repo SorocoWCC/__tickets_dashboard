@@ -1,7 +1,7 @@
 (function() {
     /*=> Tickets Dashboard Module*/
     var refreshTime = 10, // value in seconds that the screen will take to refresh
-    loadIterations = 0, igniter, _model, _view, _controller, updateJob, body, tPaidBody, 
+    loadIterations = 0, registryInterval, igniter, _model, _view, _controller, updateJob, body, tPaidBody, 
     tUnpaidBody, ticketsTable,navBar,contentTable,contentTableLeftBar,moduleContainer,
     contentTableActionBar, oldObj, newObj, container
     ticketsModule = {
@@ -130,18 +130,17 @@
 
             loadIterations ++;
 
-            if (window.SOROCOModel !== undefined) {
-                console.log('=>Instance init: __ticketsDashboard');
-                igniter = window.SOROCOModel;
-                igniter.initModule(ticketsModule, '.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');                
-            }else {
-                if (loadIterations < 5) {
+            registryInterval = setInterval(function() {
+                if (window.SOROCOModel !== undefined) {
+                    console.log('=>Instance init: __ticketsDashboard');
+                    igniter = window.SOROCOModel;
+                    igniter.initModule(ticketsModule, '.oe_view_manager.oe_view_manager_current .oe_view_manager_body .custom-container');
+                    clearInterval(registryInterval);                
+                }else {
                     console.log('Igniter not found, execution: ' +loadIterations);
                     setTimeout(that.instanceRegister() ,1000);
-                } else {
-                    console.log('=> __ticketsDashboard Unable to find Igniter');
-                }  
-            }
+                } 
+            }, 10000);
         }
         /* End Required module functions*/
     };
