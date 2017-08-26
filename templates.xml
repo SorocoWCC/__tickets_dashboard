@@ -1,0 +1,29 @@
+<openerp>
+    <data>
+        <template id="listing">
+            <title>Academy</title>
+            <t t-foreach="orders" t-as="order">
+                <p><t t-esc="order.name"/> <t t-esc="order.placa"/></p>
+            </t>
+        </template>
+        <!-- <template id="listing">
+            <h1>Hello from template</h1> -->
+        <!--   <ul> -->
+        <!--     <li t-foreach="objects" t-as="object"> -->
+        <!--       <a t-attf-href="#{ root }/objects/#{ object.id }"> -->
+        <!--         <t t-esc="object.display_name"/> -->
+        <!--       </a> -->
+        <!--     </li> -->
+        <!--   </ul> -->
+        <!-- </template> -->
+        <!-- <template id="object"> -->
+        <!--   <h1><t t-esc="object.display_name"/></h1> -->
+        <!--   <dl> -->
+        <!--     <t t-foreach="object._fields" t-as="field"> -->
+        <!--       <dt><t t-esc="field"/></dt> -->
+        <!--       <dd><t t-esc="object[field]"/></dd> -->
+        <!--     </t> -->
+        <!--   </dl> -->
+        <!-- </template> -->
+    </data>
+</openerp>
