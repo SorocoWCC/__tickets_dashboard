@@ -19,17 +19,22 @@ class QticketController(http.Controller):
     #         'orders': http.request.env['purchase.order'].search([('state', '=', 'draft'),('state', '=', 'confirmed'), ('pago_caja', '=', 'pendiente')])
     #     });
 
-    @http.route('/rest/qticket/orders/getdrafts/', auth='public')
-    def getDraftsJson(self, **kw):
+    @http.route('/rest/drafts/all/', auth='public')
+    def getDrafts(self, **kw):
     	orders = http.request.env['purchase.order'].search_read([('state', '=', 'draft'),('state', '=', 'confirmed'), ('pago_caja', '=', 'pendiente')])
         return json.dumps(orders)
 
-    @http.route('/rest/qticket/users/getusers/', auth='public')
-    def getUsersJson(self, **kw):        
+    @http.route('/rest/users/all/', auth='public')
+    def getUsers(self, **kw):        
         users = http.request.env['res.users'].search_read([('state', '=', 'active')])
         return json.dumps(users)
 
-    @http.route('/rest/qticket/users/getuser/<string(minlength=1):username>', auth='public')
-    def getUserJson(self, username, **kw):        
+    @http.route('/rest/users/get/<string(minlength=1):username>', auth='public')
+    def getUser(self, username, **kw):        
         users = http.request.env['res.users'].search_read([('login', '=', username)])
         return json.dumps(users)
+
+    @http.route('/rest/products/all/', auth='public')
+    def getProducts(self, **kw):        
+        products = http.request.env['product.template'].search_read([('active', '=', 'true')])
+        return json.dumps(products)
