@@ -19,11 +19,6 @@ class QticketController(http.Controller):
     #         'orders': http.request.env['purchase.order'].search([('state', '=', 'draft'),('state', '=', 'confirmed'), ('pago_caja', '=', 'pendiente')])
     #     });
 
-    @http.route('/rest/drafts/all/', auth='public')
-    def getDrafts(self, **kw):
-    	orders = http.request.env['purchase.order'].search_read([('state', '=', 'draft'),('state', '=', 'confirmed'), ('pago_caja', '=', 'pendiente')])
-        return json.dumps(orders)
-
     @http.route('/rest/users/all/', auth='public')
     def getUsers(self, **kw):        
         users = http.request.env['res.users'].search_read([('state', '=', 'active')])
