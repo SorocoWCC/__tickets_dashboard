@@ -10,7 +10,7 @@
             tickets = new openerp.Model('purchase.order');
         
             tickets.query(['name', 'partner_id', 'state', 'placa'])
-                .filter([['state', '!=', 'cancel'], ['pago_caja', '=', 'pendiente']])
+                .filter([['state', '!=', 'cancel'],['pago', '!=', 'muy'], ['pago_caja', '=', 'pendiente']])
                 .limit(20)
                 .all()
                 .then(function(tickets) {
