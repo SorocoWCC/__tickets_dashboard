@@ -11,24 +11,19 @@ class DashboardController(http.Controller):
         cleanDict = {}
 
         for draft in odooDraftsDict:
-            # _logger.info("=> Iteration")
-            # _logger.info(draft)
             key = draft["name"]
-            #_logger.info("=> Index" + key)
             cleanDict[draft["name"]] = draft
-
-        #_logger.info(cleanDict)
         return cleanDict
 
     def getListDIff(instance, odooDraftsDict, qTicketList):
         diffDict = {"added":[], "removed":[]}
         toRemoveKeyList = []
 
-        _logger.info("=> Qticket List Start:")
-
-        # Check every order from Odoo and save the 
-        # ID's of each order already loaded
+        #Check if enpoint received data from Qticket        
         if len(qTicketList) > 0:
+
+            # Check every order from Odoo and save the 
+            # ID's of each order already loaded
             for xKey in qTicketList:
                 for yKey in odooDraftsDict:
                     cDraft = odooDraftsDict[yKey]
@@ -47,8 +42,6 @@ class DashboardController(http.Controller):
                 diffDict["removed"].append(nKey)
                 qTicketList.remove(nKey)
 
-        _logger.info("=====> qTicketList remaining")
-        _logger.info(qTicketList)
 
         # Process and filter the results from Odoo 
         # to retrieve them to Qticket
