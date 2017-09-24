@@ -13,35 +13,55 @@ class DashboardController(http.Controller):
         for draft in odooDraftsDict:
             key = draft["name"]
             cleanDict[draft["name"]] = draft
+
         return cleanDict
 
     def getListDIff(instance, odooDraftsDict, qTicketList):
-        diffDict = {"added":[], "removed":[]}
-        toRemoveKeyList = []
+        diffDict = {"added":[],"updated": [], "removed":[]}
+        inMemoryList = []
 
-        #Check if enpoint received data from Qticket        
+        #Check if enpoint received data from Qticket
         if len(qTicketList) > 0:
 
             # Check every order from Odoo and save the 
             # ID's of each order already loaded
-            for xKey in qTicketList:
+            
+            for obj in qTicketList:
+                xKey = obj["id"]
                 for yKey in odooDraftsDict:
                     cDraft = odooDraftsDict[yKey]
                     if xKey == cDraft["name"]:
-                        toRemoveKeyList.append(xKey);
+                        inMemoryList.append({"qticket": obj, "odoo": cDraft});
 
-            # Remove any orders repeated from the list retrieved by Odoo
-            for key in toRemoveKeyList:
-                del odooDraftsDict[key]
-                qTicketList.remove(key)
+            #Loop in the array to find any repeated or updated orders
+            for obj in inMemoryList:
+                qticketOrder = obj["qticket"]
+                odooOrder = obj["odoo"]
+                key = qticketOrder["id"]
+
+                # Check if the order in QTicket was updated since the last time
+                # it was retreived, and fetch the changes
+                if odooOrder["__last_update"] != qticketOrder["last_update"]:
+                    diffDict["updated"].append({
+                        "id": odooOrder["name"],
+                        "client": odooOrder["partner_id"],
+                        "ticket": odooOrder["placa"],
+                        "last_update": odooOrder["__last_update"]
+                     })
+                    del odooDraftsDict[key]
+                    qTicketList.remove(obj["qticket"])
+                # Remove repeated order from the list retrieved by Odoo
+                else:
+                    del odooDraftsDict[key]
+                    qTicketList.remove(obj["qticket"])
                         
         # Get the remaining Ids in the list and set them
         # as "to remove" in Qticket
         if len(qTicketList) > 0:
-            for nKey in qTicketList:
+            for obj in qTicketList:
+                nKey = obj["id"]
                 diffDict["removed"].append(nKey)
-                qTicketList.remove(nKey)
-
+                qTicketList.remove(obj)
 
         # Process and filter the results from Odoo 
         # to retrieve them to Qticket
@@ -52,7 +72,9 @@ class DashboardController(http.Controller):
                 diffDict["added"].append({
                     "id": currentDraft["name"],
                     "client": currentDraft["partner_id"],
-                    "ticket": currentDraft["placa"]
+                    "ticket": currentDraft["placa"],
+                    "last_update": currentDraft["__last_update"],
+                    "is_blocked": 0
                  })
 
         return diffDict;
