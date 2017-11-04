@@ -85,8 +85,8 @@ class DashboardController(http.Controller):
     @http.route('/rest/purchases/drafts/list', type='json', auth='public', methods=['POST'], website=True)
     def getDraftsList(self, **args):
         draftsInfo = http.request.env['purchase.order'].search_read([('state', '=', 'draft'), ('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
-        approvedInfo = http.request.env['purchase.order'].search_read([('state', '=', 'confirmed'),('state', '=', 'approved'),('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
-        confimedInfo = http.request.env['purchase.order'].search_read([('state', '=', 'confirmed'),('state', '=', 'approved'),('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
+        approvedInfo = http.request.env['purchase.order'].search_read([('state', '=', 'approved'),('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
+        confimedInfo = http.request.env['purchase.order'].search_read([('state', '=', 'confirmed'),('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
 
         ids = args.get('ids', False)
         _logger.info(ids)
