@@ -56,6 +56,11 @@ class QticketController(http.Controller):
     ############################################
 
     @http.route('/rest/products/all/', auth='public')
-    def getProducts(self, **kw):        
+    def getProductsAll(self, **kw):        
         products = http.request.env['product.template'].search_read([('active', '=', 'true')])
+        return json.dumps(products)
+
+    @http.route('/rest/products/qticket/', auth='public')
+    def getProductsQticket(self, **kw):        
+        products = http.request.env['product.template'].search_read([('active', '=', 'true'),('tiquetes', '=', 'true')])
         return json.dumps(products)

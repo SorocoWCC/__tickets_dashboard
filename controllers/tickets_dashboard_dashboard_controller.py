@@ -89,7 +89,7 @@ class DashboardController(http.Controller):
         confimedInfo = http.request.env['purchase.order'].search_read([('state', '=', 'confirmed'),('pago', '!=', 'muy'), ('pago_caja', '=', 'pendiente')])
 
         ids = args.get('ids', False)
-        _logger.info(ids)
+        #_logger.info(ids)
 
         compiledResultsList = self.getCompiledResponseObj(draftsInfo, approvedInfo, confimedInfo, ids)
 
