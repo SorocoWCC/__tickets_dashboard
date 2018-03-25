@@ -43,12 +43,7 @@ class DashboardController(http.Controller):
                 # Check if the order in QTicket was updated since the last time
                 # it was retreived, and fetch the changes
                 if checkForUpdated is True and odooOrder["__last_update"] != qticketOrder["last_update"]:
-                    diffDict["updated"].append({
-                        "id": odooOrder["name"],
-                        "client": odooOrder["partner_id"],
-                        "ticket": odooOrder["placa"],
-                        "last_update": odooOrder["__last_update"]
-                     })
+                    diffDict["updated"].append(self.getOrderObject(odooDict[key]))
                     del odooDict[key]
                     qTicketList.remove(obj["qticket"])
                 # Remove repeated order from the list retrieved by Odoo
@@ -70,14 +65,17 @@ class DashboardController(http.Controller):
             for draftKey in odooDict:
                 currentDraft = odooDict[draftKey]
 
-                diffDict["added"].append({
-                    "id": currentDraft["name"],
-                    "client": currentDraft["partner_id"],
-                    "ticket": currentDraft["placa"],
-                    "last_update": currentDraft["__last_update"]
-                 })
+                diffDict["added"].append(self.getOrderObject(currentDraft))
 
         return diffDict;
+
+    def getOrderObject(self, currentDraft):
+        return {
+            "id": currentDraft["name"],
+            "client": {"id": currentDraft["partner_id"][0], "name": currentDraft["partner_id"][1]},
+            "ticket": currentDraft["placa"],
+            "last_update": currentDraft["__last_update"]
+         }
 
     def getCompiledResponseObj(self, drafts, confirmed, approved, qTicketList):
         return {"drafts": self.getDictDIff(self.getPristineDict(drafts), qTicketList["drafts"], True), "confirmed": self.getDictDIff(self.getPristineDict(confirmed), qTicketList["confirmed"]), "approved": self.getDictDIff(self.getPristineDict(approved), qTicketList["approved"])}

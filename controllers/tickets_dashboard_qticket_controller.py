@@ -32,7 +32,7 @@ class QticketController(http.Controller):
         confirmedDrafts = http.request.env['purchase.order'].search_read([('state', '=', 'draft'),('state', '=', 'confirmed'), ('pago_caja', '=', 'pendiente')])
         return json.dumps(confirmedDrafts)
 
-    @http.route('/rest/purchases/approved/all', auth='public')
+    @http.route('/rest/purchases/approved/all/', auth='public')
     def getOrders(self, **kw):
         orders = http.request.env['purchase.order'].search_read([('state', '=', 'approved'), ('pago_caja', '=', 'pendiente')])
         return json.dumps(orders)
